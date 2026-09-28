@@ -1,0 +1,190 @@
+"""
+Faith Reginald S. Vermudo
+Grade 8 - Rosal
+September 25, 2026
+Program Description: Calculates a student's final grade and
+determines the corresponding adjectival rating.
+"""
+
+import math
+
+def display_title():
+    # Displays the program title.
+    print("---")
+    print("FINAL GRADE CALCULATOR")
+    print()
+
+
+def get_score(assessment_name, highest_score):
+    # Repeats until the user enters a valid whole number within the allowed score range.
+    while True:
+        try:
+            # Tries to convert the user's input into a whole number.
+            score = int(input(f"{assessment_name}: "))
+
+            if score < 0 or score > highest_score:
+                print(
+                    f"Invalid score. Please enter a value from "
+                    f"0 to {highest_score}."
+                )
+            else:
+                return score
+
+        except ValueError:
+            # Prevents the program from crashing when the user enters something that is not a whole number.
+            print("Invalid input. Please enter a whole number.")
+
+
+def calculate_grade(fa_scores, long_test, practical_test, proposal):
+    # The five FAs have a total combined maximum of 135 points.
+    # Dividing by 135 and multiplying by 100 gives the FA percentage.
+    
+    fa_percentage = sum(fa_scores) / 135 * 100
+
+    long_test_percentage = long_test / 50 * 100
+    practical_percentage = practical_test / 60 * 100
+    proposal_percentage = proposal / 100 * 100
+
+    # Apply the required weights to each assessment component.
+    weighted_fa = fa_percentage * 0.30
+    weighted_long_test = long_test_percentage * 0.30
+    weighted_practical = practical_percentage * 0.30
+    weighted_proposal = proposal_percentage * 0.10
+
+    final_grade = (weighted_fa + weighted_long_test + weighted_practical + weighted_proposal)
+
+    # The math.ceil function rounds the final grade upward to two decimal places.
+    final_grade = math.ceil(final_grade * 100) / 100
+
+    return (
+        fa_percentage,
+        long_test_percentage,
+        practical_percentage,
+        proposal_percentage,
+        final_grade
+    )
+
+
+def get_rating(final_grade):
+    # Determines the adjectival rating based on the final grade.
+    if final_grade >= 90:
+        return "EXCELLENT"
+    elif final_grade >= 85:
+        return "VERY GOOD"
+    elif final_grade >= 80:
+        return "GOOD"
+    elif final_grade >= 75:
+        return "SATISFACTORY"
+    else:
+        return "NEEDS IMPROVEMENT"
+
+
+def display_result(
+    student_name,
+    student_id,
+    scores,
+    final_grade,
+    rating
+):
+    # Displays the student's information, scores, and final result.
+    print("\n==================================================")
+    print("FINAL GRADE CALCULATOR")
+    print()
+    print(f"Student Name: {student_name}")
+    print(f"Student ID: {student_id}")
+    print()
+    
+    # The indexes use each score's position in the list to display the results.
+    print(f"FA 1: {scores[0]}/30")
+    print(f"FA 2: {scores[1]}/30")
+    print(f"FA 3: {scores[2]}/25")
+    print(f"FA 4: {scores[3]}/30")
+    print(f"FA 5: {scores[4]}/20")
+    print(f"Long Test 1: {scores[5]}/50")
+    print(f"Practical Test: {scores[6]}/60")
+    print(f"Initial Project Proposal: {scores[7]}/100")
+    print()
+
+    # Displays the final grade with exactly two decimal places.
+    print(f"Final Weighted Average: {final_grade:.2f}%")
+    print(f"Adjectival Rating: {rating}")
+    print("==================================================")
+
+
+# Main program
+display_title()
+
+# Gets the student's name and removes unnecessary spaces at the beginning or end.
+student_name = input("Student Name: ").strip()
+
+while student_name == "":
+    print("Error: Student name cannot be blank.")
+    student_name = input("Student Name: ").strip()
+
+
+# Converts the ID to uppercase so lowercase input is also accepted.
+student_id = input("Student ID: ").strip().upper()
+
+# Repeats until the Student ID meets all the required conditions.
+while not (
+    student_id.startswith("G8-")
+    and len(student_id) == 7
+    # Checks that the characters after "G8-" are all numbers.
+    and student_id[3:].isdigit()
+):
+    print("Error: Student ID must follow the format G8-####.")
+    student_id = input("Student ID: ").strip().upper()
+
+
+fa1 = get_score("FA 1", 30)
+fa2 = get_score("FA 2", 30)
+fa3 = get_score("FA 3", 25)
+fa4 = get_score("FA 4", 30)
+fa5 = get_score("FA 5", 20)
+
+long_test = get_score("Long Test 1", 50)
+practical_test = get_score("Practical Test", 60)
+proposal = get_score("Initial Project Proposal", 100)
+
+
+# Groups the five FA scores so they can be calculated together.
+fa_scores = [fa1, fa2, fa3, fa4, fa5]
+
+results = calculate_grade(
+    fa_scores,
+    long_test,
+    practical_test,
+    proposal
+)
+
+# The function returns five values, so each one is retrieved by its position.
+fa_percentage = results[0]
+long_test_percentage = results[1]
+practical_percentage = results[2]
+proposal_percentage = results[3]
+final_grade = results[4]
+
+rating = get_rating(final_grade)
+
+# Groups all scores together for the final report.
+scores = [
+    fa1,
+    fa2,
+    fa3,
+    fa4,
+    fa5,
+    long_test,
+    practical_test,
+    proposal
+]
+
+print("---")
+
+display_result(
+    student_name,
+    student_id,
+    scores,
+    final_grade,
+    rating
+)
+

@@ -29,6 +29,10 @@ Final Weighted Average: 87.30%
 Adjectival Rating: VERY GOOD
 ---
 
+## References
+Python Software Foundation. (n.d.). Built-in functions. Python documentation. https://docs.python.org/3/library/functions.html
+Python Software Foundation. (n.d.). math — Mathematical functions. Python documentation. https://docs.python.org/3/library/math.html
+
 ## Author
 Faith Reginald S. Vermudo
 8 - Rosal
